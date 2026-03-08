@@ -43,13 +43,11 @@
             font-size: 22px;
             color: white;
             width: 70%;
-            margin-left: auto;
-            margin-right: auto;
+            margin: auto;
             min-height: 120px;
         }
 
-        /* Tap button */
-        #playBtn {
+        #loveBtn {
             padding: 12px 25px;
             font-size: 18px;
             border: none;
@@ -58,6 +56,23 @@
             color: white;
             cursor: pointer;
             margin-top: 20px;
+            display: none;
+        }
+
+        /* Popup */
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            color: #ff0066;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            font-size: 22px;
+            z-index: 10;
         }
 
         /* hearts */
@@ -80,6 +95,15 @@
                 opacity: 0;
             }
         }
+
+        /* fireworks */
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: yellow;
+            border-radius: 50%;
+        }
     </style>
 </head>
 
@@ -93,18 +117,23 @@
 
     <div id="message"></div>
 
-    <button id="playBtn">Tap for a Surprise ❤️</button>
+    <button id="loveBtn">Will you be mine forever? 💍</button>
 
     <audio id="music" loop>
         <source src="love.mp3" type="audio/mpeg">
     </audio>
 
+    <div id="popup">YES! 💖 I will be yours forever ❤️</div>
+
     <script>
-        /* ===== Music Button ===== */
-        document.getElementById("playBtn").onclick = function () {
-            document.getElementById("music").play();
-            this.style.display = "none"; // hide button after click
-        };
+        /* ===== Music: Start on first tap anywhere ===== */
+        document.body.addEventListener("click", function () {
+            const music = document.getElementById("music");
+            if (music.paused) {
+                music.play();
+                document.getElementById("loveBtn").style.display = "inline-block";
+            }
+        }, { once: true });
 
         /* ===== Slideshow ===== */
         let images = ["pic1.jpg", "pic2.jpg", "pic3.jpg", "pic4.jpg"];
@@ -139,6 +168,27 @@
             setTimeout(() => { heart.remove(); }, 6000);
         }
         setInterval(createHeart, 300);
+
+        /* ===== Love Button Popup ===== */
+        document.getElementById("loveBtn").onclick = function () {
+            document.getElementById("popup").style.display = "block";
+            launchFireworks();
+        };
+
+        /* ===== Fireworks Animation ===== */
+        function launchFireworks() {
+            for (let f = 0; f < 50; f++) {
+                let fire = document.createElement("div");
+                fire.classList.add("firework");
+                fire.style.left = Math.random() * 100 + "vw";
+                fire.style.top = Math.random() * 100 + "vh";
+                fire.style.background = `hsl(${Math.random() * 360},100%,50%)`;
+                fire.style.width = fire.style.height = Math.random() * 10 + 5 + "px";
+                document.body.appendChild(fire);
+                setTimeout(() => { fire.remove(); }, 1000);
+            }
+        }
+        setInterval(launchFireworks, 2000);
 
     </script>
 
