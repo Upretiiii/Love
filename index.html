@@ -111,6 +111,8 @@
 
     <h1>I Love You My Love ❤️</h1>
 
+    <p style="color:white; font-size:16px;">Tap anywhere on the screen to hear the surprise 🎵</p>
+
     <div id="slideshow">
         <img id="slide" src="pic1.jpg">
     </div>
@@ -130,7 +132,7 @@
         document.body.addEventListener("click", function () {
             const music = document.getElementById("music");
             if (music.paused) {
-                music.play();
+                music.play().catch(err => console.log("Audio blocked, tap required"));
                 document.getElementById("loveBtn").style.display = "inline-block";
             }
         }, { once: true });
